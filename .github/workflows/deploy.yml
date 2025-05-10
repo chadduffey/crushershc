@@ -1,0 +1,33 @@
+name: Deploy-static-site-to-Azure
+
+on:
+  push:
+    branches: [ main ]          # a PR merge normally ends up as a push to main
+  workflow_dispatch:            # …and you can trigger manually from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥  Check out repository
+      uses: actions/checkout@v4
+
+    - name: 🔑  Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # OPTIONAL – wipe anything that should never be published
+    #   rm -rf .github .gitignore README.md etc.
+
+    - name: 🚀  Upload to $web container
+      run: |
+        az storage blob upload-batch \
+          --destination "\$web" \
+          --account-name ${{ secrets.STORAGE_ACCOUNT }} \
+          --source . \
+          --overwrite
+
+    - name: ✅  Done
+      run: echo "Site uploaded – visit the static URL to verify."
