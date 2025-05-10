@@ -27,7 +27,9 @@ jobs:
           --destination "\$web" \
           --account-name ${{ secrets.STORAGE_ACCOUNT }} \
           --source . \
-          --overwrite
+          --overwrite \
+          --auth-mode login         
+
 
     - name: ✅  Done
       run: echo "Site uploaded – visit the static URL to verify."
