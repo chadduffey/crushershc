@@ -40,10 +40,8 @@
     }
 
     .hero {
-      background-image: url('main.jpg');
-      background-size: cover;
-      background-position: center;
-      height: 70vh;
+      position: relative;
+      height: clamp(420px, 70vh, 900px);
       width: 100%;
       display: flex;
       align-items: center;
@@ -52,6 +50,33 @@
       color: white;
       text-shadow: 0 2px 4px rgba(0,0,0,0.7);
       box-sizing: border-box;
+      overflow: hidden;
+      background: #1f1529;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url('hero-main.png');
+      background-position: center;
+    }
+
+    .hero::before {
+      background-size: cover;
+      filter: blur(16px) brightness(0.45);
+      transform: scale(1.06);
+    }
+
+    .hero::after {
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
     }
 
     .hero h2 {
